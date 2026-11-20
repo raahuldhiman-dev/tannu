@@ -5,7 +5,7 @@
    case-study tabs, back-to-top, contact form, footer year.
    ============================================================ */
 
-const PORTFOLIO_EMAIL = "hello@tannu.com"; // TODO: replace with your professional email
+const PORTFOLIO_EMAIL = "taranpreet8219@gmail.com"; // TODO: replace with your professional email
 
 const $ = (selector, scope) => (scope || document).querySelector(selector);
 const $$ = (selector, scope) => Array.from((scope || document).querySelectorAll(selector));
