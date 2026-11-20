@@ -247,10 +247,13 @@ h3 { color: var(--heading); }
 .contact { background: linear-gradient(140deg, #101b35, #1b2a52); color: #fff; border-radius: 24px; padding: 46px; }
 .contact h2 { color: #fff; }
 .contact p { color: #d1d8e6; }
-.contact .overline { color: #bfb2ff; }.contact-details { display: flex; gap: 18px; flex-wrap: wrap; margin: 22px 0 6px; }
+.contact .overline { color: #bfb2ff; }
+.contact-details { display: flex; gap: 18px; flex-wrap: wrap; margin: 22px 0 6px; }
 .contact-detail { background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 14px; padding: 14px 18px; }
 .contact-detail span { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #aeb9d0; font-weight: 700; }
 .contact-detail b { color: #fff; font-size: 14px; }
+.contact-detail a { color: #c4b5fd; font-weight: 700; }
+.contact-detail a:hover { text-decoration: underline; }
 
 .contact-form { margin-top: 26px; display: grid; gap: 12px; max-width: 560px; }
 .contact-form input, .contact-form textarea {
