@@ -159,7 +159,18 @@ if (typedEl) {
 
 /* ---------- Case study tabs ---------- */
 const caseTabs = $$(".case-tab");
-const caseItems = $$(".case-item");
+const caseItems = $$(".case");
+
+if (caseTabs.length && caseItems.length) {
+  const firstTab = caseTabs[0];
+  firstTab.classList.add("active");
+  firstTab.setAttribute("aria-selected", "true");
+  const firstItem = caseItems.find((item) => item.getAttribute("data-case") === firstTab.getAttribute("data-case"));
+  if (firstItem) {
+    firstItem.hidden = false;
+    firstItem.classList.add("active");
+  }
+}
 
 caseTabs.forEach((tab) => {
   tab.addEventListener("click", () => {

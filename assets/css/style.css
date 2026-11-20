@@ -216,8 +216,8 @@ h3 { color: var(--heading); }
 .case-tab.active { background: var(--navy); border-color: var(--navy); color: #fff; }
 .case-tab.active small { color: #c4b5fd; }
 .case-panel { max-width: 880px; }
-.case-item { display: none; }
-.case-item.active { display: block; animation: fadeUp 0.4s ease; }
+.case { display: none; }
+.case.active { display: block; animation: fadeUp 0.4s ease; }
 .case { padding: 30px; }
 .case-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
 .case h3 { font-size: 22px; margin: 12px 0 0; color: var(--heading); }
