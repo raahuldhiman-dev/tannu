@@ -34,11 +34,48 @@ if (themeToggle) {
   });
 }
 
-/* ---------- Scroll progress + back to top + nav state ---------- */
+/* ---------- Scroll progress + back to top + nav state + reveals + counters ---------- */
 const scrollBar = $("#scrollProgressBar");
 const backToTop = $("#backToTop");
 const nav = $("#nav");
 const NAV_SECTIONS = ["home", "about", "expertise", "experience", "case-studies", "projects", "approach", "contact"];
+const countedElements = new Set();
+
+const checkReveals = () => {
+  const vh = window.innerHeight || document.documentElement.clientHeight;
+  $$(".reveal").forEach((el) => {
+    if (el.classList.contains("in")) return;
+    const rect = el.getBoundingClientRect();
+    if (rect.top < vh + 80 && rect.bottom > -80) {
+      el.classList.add("in");
+    }
+  });
+};
+
+const runCounter = (el) => {
+  const target = parseFloat(el.getAttribute("data-count")) || 0;
+  const duration = 1400;
+  const start = performance.now();
+  const step = (now) => {
+    const p = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = String(Math.round(target * eased));
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+};
+
+const checkCounters = () => {
+  const vh = window.innerHeight || document.documentElement.clientHeight;
+  $$("[data-count]").forEach((el) => {
+    if (countedElements.has(el)) return;
+    const rect = el.getBoundingClientRect();
+    if (rect.top < vh + 80 && rect.bottom > -80) {
+      countedElements.add(el);
+      runCounter(el);
+    }
+  });
+};
 
 const onScroll = () => {
   const doc = document.documentElement;
@@ -49,6 +86,9 @@ const onScroll = () => {
   if (nav) nav.classList.toggle("scrolled", doc.scrollTop > 8);
 
   if (backToTop) backToTop.classList.toggle("show", doc.scrollTop > 480);
+
+  checkReveals();
+  checkCounters();
 
   let current = "home";
   for (const id of NAV_SECTIONS) {
@@ -61,6 +101,7 @@ const onScroll = () => {
 };
 
 window.addEventListener("scroll", onScroll, { passive: true });
+window.addEventListener("resize", onScroll);
 window.addEventListener("load", onScroll);
 onScroll();
 
@@ -81,50 +122,6 @@ if (navToggle && navLinks) {
     if (event.target.closest("a")) nav.classList.remove("open");
   });
 }
-
-/* ---------- Scroll reveal ---------- */
-const revealElements = $$(".reveal");
-if ("IntersectionObserver" in window) {
-  const revealObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("in");
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.12 }
-  );
-  revealElements.forEach((el) => revealObserver.observe(el));
-}
-
-/* ---------- Animated counters ---------- */
-const runCounter = (el) => {
-  const target = parseFloat(el.getAttribute("data-count")) || 0;
-  const duration = 1400;
-  const start = performance.now();
-  const step = (now) => {
-    const p = Math.min((now - start) / duration, 1);
-    const eased = 1 - Math.pow(1 - p, 3);
-    el.textContent = String(Math.round(target * eased));
-    if (p < 1) requestAnimationFrame(step);
-  };
-  requestAnimationFrame(step);
-};
-
-const counterObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        runCounter(entry.target);
-        counterObserver.unobserve(entry.target);
-      }
-    });
-  },
-  { threshold: 0.6 }
-);
-$$("[data-count]").forEach((el) => counterObserver.observe(el));
 
 /* ---------- Typed role rotator ---------- */
 const typedEl = $("#typed");
@@ -155,9 +152,7 @@ const stopTyped = () => {
 
 if (typedEl) {
   setRole(ROLES[0]);
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    // keep static
-  } else {
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     startTyped();
   }
 }
